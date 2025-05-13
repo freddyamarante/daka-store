@@ -1,19 +1,12 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import axios from 'axios'
-
-interface Product {
-  id: number
-  title: string
-  price: number
-  category: string
-  image: string
-}
+import type Product from './types'
 
 const products = ref<Product[]>([])
 const categories = ref<string[]>([])
 const exchangeRate = ref(0)
-const exchangeDatetime = ref<{date: string, time: string}>({
+const exchangeDatetime = ref<{ date: string, time: string }>({
   date: '',
   time: ''
 })
@@ -46,8 +39,30 @@ onMounted(async () => {
     error.value = 'Error cargando datos'
   } finally {
     loading.value = false
+    console.log('Products:', products.value)
+    console.log('Categories:', categories.value)
+    console.log('Exchange Rate:', exchangeRate.value)
   }
 })
+
+const filteredProducts = computed(() => {
+  return products.value.filter(p => {
+    const matchCategory = selectedCategory.value === 'all' || p.category === selectedCategory.value
+    const matchPrice = p.price >= minPrice.value && p.price <= maxPrice.value
+    return matchCategory && matchPrice
+  })
+})
+
+const paginatedProducts = computed(() => {
+  const start = (currentPage.value - 1) * 5
+  return filteredProducts.value.slice(start, start + 5)
+})
+
+const stats = computed(() => ({
+  totalProducts: filteredProducts.value.length,
+  uniqueCategories: new Set(filteredProducts.value.map(p => p.category)).size,
+  averagePrice: filteredProducts.value.reduce((acc, p) => acc + p.price, 0) / filteredProducts.value.length || 0
+}))
 
 </script>
 
@@ -56,8 +71,8 @@ onMounted(async () => {
     <div>
       <h2>Debug Info</h2>
 
-
-      <!-- <pre>{{ { products, categories, exchangeRate, exchangeDatetime, currentPage, selectedCategory, minPrice, maxPrice, loading, error } }}</pre> -->
+      <div class="mx-auto max-w-7xl px-8">
+      </div>
     </div>
   </div>
 </template>

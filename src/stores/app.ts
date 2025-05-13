@@ -11,6 +11,7 @@ interface AppState {
   }
   products: Product[]
   categories: string[]
+  minPrice: number
   maxPrice: number
 }
 
@@ -24,6 +25,7 @@ export const useAppStore = defineStore('app', {
     },
     products: [],
     categories: [],
+    minPrice: 0,
     maxPrice: 1000
   }),
   actions: {

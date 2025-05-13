@@ -60,7 +60,7 @@
             <span class="text-md text-slate-500/90 font-medium">{{ otherFormattedPrice }}</span>
           </div>
         </div>
-        <p v-else class="text-xl font-bold text-slate-900 leading-none">{{ currentSelectedFormattedPrice }}</p>
+        <p v-else class="text-xl font-bold text-teal-700 leading-none">{{ currentSelectedFormattedPrice }}</p>
       </div>
     </div>
   </div>

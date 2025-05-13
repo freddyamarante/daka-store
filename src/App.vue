@@ -2,6 +2,7 @@
 import { ref, computed, onMounted } from 'vue'
 import axios from 'axios'
 import type Product from './types'
+import ProductList from './components/ProductList.vue'
 
 const products = ref<Product[]>([])
 const categories = ref<string[]>([])
@@ -71,7 +72,15 @@ const stats = computed(() => ({
     <div>
       <h2>Debug Info</h2>
 
-      <div class="mx-auto max-w-7xl px-8">
+      <div>
+        <h2>Status </h2>
+
+        <p v-if="loading">Loading...</p>
+        <p v-if="error">{{ error }}</p>
+      </div>
+
+      <div class="mx-auto max-w-3xl sm:max-w-5xl lg:max-w-7xl px-16 sm:px-8 lg:px-6">
+        <ProductList :products="products" />
       </div>
     </div>
   </div>

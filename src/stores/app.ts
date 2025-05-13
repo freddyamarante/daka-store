@@ -11,8 +11,11 @@ interface AppState {
   }
   products: Product[]
   categories: string[]
-  minPrice: number
-  maxPrice: number
+  filterOptions: {
+    selectedCategories: string[]
+    minPrice: number
+    maxPrice: number
+  }
 }
 
 export const useAppStore = defineStore('app', {
@@ -25,8 +28,11 @@ export const useAppStore = defineStore('app', {
     },
     products: [],
     categories: [],
-    minPrice: 0,
-    maxPrice: 1000
+    filterOptions: {
+      selectedCategories: [],
+      minPrice: 0,
+      maxPrice: 1000,
+    }
   }),
   actions: {
     async fetchInitialData() {
@@ -44,7 +50,8 @@ export const useAppStore = defineStore('app', {
           date: rateRes.data?.datetime?.date || '',
           time: rateRes.data?.datetime?.time || '',
         }
-        this.maxPrice = Math.max(...this.products.map(p => p.price))
+        this.filterOptions.minPrice = Math.min(...this.products.map(p => p.price))
+        this.filterOptions.maxPrice = Math.max(...this.products.map(p => p.price))
         
       } catch (error) {
         console.error('Error fetching data:', error)
@@ -53,12 +60,26 @@ export const useAppStore = defineStore('app', {
     },
   },
   getters: {
-    filteredProducts: (state) => (filters: { category: string; min: number; max: number }) => {
+    filteredProducts: (state) => (filters: { categories?: string[]; min?: number; max?: number } = {}) => {
+      const { categories = [], min = 0, max = Infinity } = filters;
       return state.products.filter(p => {
-        const matchCategory = filters.category === 'all' || p.category === filters.category
-        const matchPrice = p.price >= filters.min && p.price <= filters.max
-        return matchCategory && matchPrice
-      })
-    }
+          const matchCategory = categories.length === 0 || categories.includes(p.category);
+          const matchPrice = p.price >= min && p.price <= max;
+          return matchCategory && matchPrice;
+      });
+    },
+    stats: (state) => {
+      const store = useAppStore();
+      const filteredProducts = store.filteredProducts({ 
+          categories: state.filterOptions.selectedCategories,
+          min: state.filterOptions.minPrice,
+          max: state.filterOptions.maxPrice
+      });
+      return {
+        totalProducts: filteredProducts.length,
+        uniqueCategories: new Set(filteredProducts.map(p => p.category)).size,
+        averagePrice: filteredProducts.reduce((acc, p) => acc + p.price, 0) / filteredProducts.length || 0,
+      };
+    },
   }
 })

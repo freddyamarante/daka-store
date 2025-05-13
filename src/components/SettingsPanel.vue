@@ -8,7 +8,7 @@ const appStore = useAppStore();
   <div class="flex flex-col space-y-6 rounded-xl bg-slate-100 p-6 border border-teal-800/40 shadow-lg">
     <h1 class="text-3xl font-semibold text-teal-700 border-b pb-3 border-teal-800/40">Panel de Configuración</h1>
 
-    <div class="space-y-3">
+    <form class="space-y-3">
       <h2 class="text-xl font-medium text-slate-800">Visualización de Precios</h2>
       
       <div class="p-4 bg-white rounded-lg shadow border border-slate-200 space-y-4">
@@ -50,7 +50,7 @@ const appStore = useAppStore();
           </div>
         </div>
       </div>
-    </div>
+    </form>
 
     <div class="space-y-3">
       <h2 class="text-xl font-medium text-slate-800">Información de Tasa de Cambio</h2>

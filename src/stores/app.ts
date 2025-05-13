@@ -19,7 +19,7 @@ export const useAppStore = defineStore('app', {
     exchangeRate: 0,
     exchangeDatetime: { date: '', time: '' },
     displayOptions: {
-      showBothPrices: false,
+      showBothPrices: true,
       selectedCurrency: 'USD'
     },
     products: [],

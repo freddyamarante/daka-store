@@ -1,9 +1,32 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import type Product from '../types'
 
-defineProps<{
-  product: Product
+const props = defineProps<{
+  product: Product,
+  currency: string,
+  exchangeRate: number
 }>()
+
+const formattedPrice = computed(() => {
+  const productPrice = props.product.price
+  const exchangeRate = props.exchangeRate
+  
+  if (props.currency === 'USD') {
+    return `$${productPrice.toFixed(2)} USD` 
+  } else if (props.currency === 'Bs') {
+    const priceInBs = productPrice * exchangeRate
+    
+    return `Bs. ${priceInBs.toLocaleString('es-VE', {
+      style: 'decimal',
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    })}`
+  }
+  
+  return '' 
+})
+
 </script>
 
 <template>
@@ -22,7 +45,7 @@ defineProps<{
       <p class="text-sm text-slate-500 line-clamp-3">{{ product.description }}</p>
       <div class="flex flex-1 flex-col justify-end">
         <p class="text-sm italic text-slate-500">{{ product.options }}</p>
-        <p class="text-base font-semibold text-slate-900">REF. {{ product.price }}</p>
+        <p class="text-lg font-semibold text-slate-900">{{ formattedPrice }}</p>
       </div>
     </div>
   </div>

@@ -11,6 +11,7 @@ const exchangeDatetime = ref<{ date: string, time: string }>({
   date: '',
   time: ''
 })
+const selectedCurrency = ref<'USD' | 'Bs'>('Bs')
 const currentPage = ref(1)
 const selectedCategory = ref('all')
 const minPrice = ref(0)
@@ -72,16 +73,28 @@ const stats = computed(() => ({
     <div>
       <h2>Debug Info</h2>
 
-      <div>
-        <h2>Status </h2>
+      <div class="flex space-x-4">
+        <div class="flex gap-2">
+          <h2>Status </h2>
+          <p v-if="loading">Loading...</p>
+          <p v-if="error">{{ error }}</p>
+          <p v-if="!loading && !error">Loaded</p>
+        </div>
 
-        <p v-if="loading">Loading...</p>
-        <p v-if="error">{{ error }}</p>
-      </div>
 
-      <div class="mx-auto max-w-3xl sm:max-w-5xl lg:max-w-7xl px-16 sm:px-8 lg:px-6">
-        <ProductList :products="products" />
+        
+        <div>
+          <p>Exchange rate: {{ exchangeRate }}</p>
+        </div>
+
+        <div>
+          <p>Selected currency: {{ selectedCurrency }}</p>
+        </div>
       </div>
+    </div>
+
+    <div class="mx-auto max-w-3xl sm:max-w-5xl lg:max-w-[1320px] px-16 sm:px-8 lg:px-3">
+      <ProductList :products="products" :currency="selectedCurrency" :exchangeRate="exchangeRate" />
     </div>
   </div>
 </template>

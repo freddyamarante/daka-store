@@ -44,7 +44,7 @@
 
 <template>
   <div class="space-y-8">
-    <div class="mx-auto max-w-3xl sm:max-w-5xl lg:max-w-[1320px] px-16 sm:px-8 lg:px-3">
+    <div class="mx-auto max-w-3xl sm:max-w-5xl lg:max-w-[1320px] px-6 sm:px-8 lg:px-3">
       <ProductList :products="paginatedProducts" />
     </div>
   </div>

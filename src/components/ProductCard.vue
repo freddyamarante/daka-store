@@ -44,9 +44,9 @@
 <template>
   <div
     class="group relative flex flex-col overflow-hidden rounded-xl border border-teal-800/40 bg-white shadow-sm h-full hover:bg-slate-100 transition-colors duration-200 ease-in-out">
-    <div class="border-b border-teal-800/40 sm:h-[460px] overflow-hidden">
+    <div class="border-b border-teal-800/40 h-[420px] sm:h-[460px] overflow-hidden">
       <img :src="product.image" :alt="`${product.title} - Image`"
-        class="w-full aspect-[5/4] object-fill sm:aspect-auto sm:h-full group-hover:scale-105 transition duration-200 ease-in-out" />
+        class="w-full aspect-[3/4] object-fill sm:aspect-auto sm:h-full group-hover:scale-105 transition duration-200 ease-in-out" />
     </div>
     <div class="flex flex-1 flex-col space-y-2 p-4">
       <h2 class="text-md font-medium text-slate-900 line-clamp-1">

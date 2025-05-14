@@ -50,6 +50,23 @@ const appStore = useAppStore();
           </div>
         </div>
       </div>
+
+      <h2 class="text-xl font-medium text-slate-800">Visualización de Productos</h2>
+      
+      <div class="p-4 rounded-lg border border-slate-200 space-y-4">
+        <div class="flex items-center">
+          <label for="itemsPerPage" class="mr-3 block text-sm font-medium text-slate-700 cursor-pointer">Número de productos por página:</label>
+            <input 
+            type="number" 
+            id="itemsPerPage" 
+            min="0"
+            max="20"
+            v-model.number="appStore.pagination.itemsPerPage"
+            @input="appStore.pagination.itemsPerPage = Math.min(Math.max(appStore.pagination.itemsPerPage, 0), 20)"
+            class="text-teal-600 border border-slate-800 bg-white rounded focus:ring-teal-500 focus:ring-offset-0 cursor-pointer px-4 py-1"
+            />
+        </div>
+      </div>
     </form>
 
     <div class="space-y-3">

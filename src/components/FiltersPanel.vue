@@ -1,9 +1,11 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, defineEmits } from 'vue';
 import { useAppStore } from '../stores/app';
 import RangeSlider from './RangeSlider.vue';
 
 const appStore = useAppStore();
+
+const emit = defineEmits(['categoryChanged', 'priceRangeChanged']);
 
 const selectedCategories = computed({
   get() {
@@ -20,6 +22,8 @@ const handleCheckboxChange = (category: string) => {
   } else {
     selectedCategories.value.push(category);
   }
+
+  emit('categoryChanged')
 };
 
 const availableMin = computed(() =>
@@ -67,6 +71,7 @@ const priceRange = computed({
       <h3 class="text-lg font-medium mb-2">Rango de Precios</h3>
       <RangeSlider
         v-model="priceRange"
+        @update:modelValue="(value) => $emit('priceRangeChanged', value)"
         :min="availableMin"
         :max="availableMax"
       />
@@ -77,5 +82,3 @@ const priceRange = computed({
     </div>
   </div>
 </template>
-
-<style scoped></style>

@@ -16,6 +16,9 @@ interface AppState {
     minPrice: number
     maxPrice: number
   }
+  pagination: {
+    itemsPerPage: number
+  }
 }
 
 export const useAppStore = defineStore('app', {
@@ -32,6 +35,9 @@ export const useAppStore = defineStore('app', {
       selectedCategories: [],
       minPrice: 0,
       maxPrice: 1000,
+    },
+    pagination: {
+      itemsPerPage: 6,
     }
   }),
   actions: {
@@ -60,11 +66,10 @@ export const useAppStore = defineStore('app', {
     },
   },
   getters: {
-    filteredProducts: (state) => (filters: { categories?: string[]; min?: number; max?: number } = {}) => {
-      const { categories = [], min = 0, max = Infinity } = filters;
+    filteredProducts: (state) => (filters: { categories: string[]; min: number; max: number }) => {
       return state.products.filter(p => {
-          const matchCategory = categories.length === 0 || categories.includes(p.category);
-          const matchPrice = p.price >= min && p.price <= max;
+          const matchCategory = filters.categories.length === 0 || filters.categories.includes(p.category);
+          const matchPrice = p.price >= filters.min && p.price <= filters.max;
           return matchCategory && matchPrice;
       });
     },

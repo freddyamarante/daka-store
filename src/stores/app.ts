@@ -43,6 +43,8 @@ export const useAppStore = defineStore('app', {
   actions: {
     async fetchInitialData() {
       try {
+        this.loadFromLocalStorage()
+
         const [productsRes, categoriesRes, rateRes] = await Promise.all([
           axios.get('https://fakestoreapi.com/products'),
           axios.get('https://fakestoreapi.com/products/categories'),
@@ -64,6 +66,27 @@ export const useAppStore = defineStore('app', {
         throw error
       }
     },
+    loadFromLocalStorage() {
+      const savedState = localStorage.getItem('appStore')
+      if (savedState) {
+        try {
+          const parsed = JSON.parse(savedState)
+          this.displayOptions = parsed.displayOptions || this.displayOptions
+          this.pagination.itemsPerPage = parsed.pagination?.itemsPerPage || this.pagination.itemsPerPage
+        } catch (e) {
+          console.error('Failed to parse saved state', e)
+        }
+      }
+    },
+    saveToLocalStorage() {
+      const stateToSave = {
+        displayOptions: this.displayOptions,
+        pagination: {
+          itemsPerPage: this.pagination.itemsPerPage
+        }
+      }
+      localStorage.setItem('appStore', JSON.stringify(stateToSave))
+    }
   },
   getters: {
     filteredProducts: (state) => (filters: { categories: string[]; min: number; max: number }) => {

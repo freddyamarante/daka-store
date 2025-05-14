@@ -1,7 +1,23 @@
 <script setup lang="ts">
+import {watch} from 'vue';
 import { useAppStore } from '../stores/app';
 
 const appStore = useAppStore();
+
+watch(
+  () => appStore.displayOptions,
+  (newValue) => {
+    appStore.saveToLocalStorage()
+  },
+  { deep: true }
+)
+
+watch(
+  () => appStore.pagination.itemsPerPage,
+  (newValue) => {
+    appStore.saveToLocalStorage()
+  }
+)
 </script>
 
 <template>

@@ -9,8 +9,10 @@ defineProps<{
 
 <template>
   <div class="w-full h-full">
-    <div v-if="products.length > 0" class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-x-12 sm:gap-y-10">
-       <ProductCard v-for="product in products" :key="product.id" :product="product" />
+    <div v-if="products.length > 0">
+      <TransitionGroup name="list" tag="div" class="flex flex-wrap gap-4">
+        <ProductCard v-for="product in products" :key="product.id" :product="product" />
+      </TransitionGroup>
     </div>
 
     <div v-else>
@@ -21,3 +23,21 @@ defineProps<{
     </div>
   </div>
 </template>
+
+<style scoped>
+.list-move,
+.list-enter-active,
+.list-leave-active {
+  transition: all 0.5s ease;
+}
+
+.list-enter-from,
+.list-leave-to {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+.list-leave-active {
+  position: relative;
+}
+</style>

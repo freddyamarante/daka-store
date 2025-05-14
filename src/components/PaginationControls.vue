@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import { useUrlSearchParams } from '@vueuse/core'
 
 const props = defineProps({
   currentPage: {
@@ -15,6 +16,8 @@ const props = defineProps({
     default: 5
   }
 })
+
+const params = useUrlSearchParams('history')
 
 const emit = defineEmits(['page-change'])
 
@@ -42,6 +45,7 @@ const shouldShowEllipsisEnd = computed(() => {
 const goToPage = (page: number) => {
   if (page >= 1 && page <= props.totalPages) {
     emit('page-change', page)
+    params.page = page
   }
 }
 

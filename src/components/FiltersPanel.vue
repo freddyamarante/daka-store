@@ -60,7 +60,7 @@ const priceRange = computed({
           :checked="selectedCategories.includes(category)"
           @change="handleCheckboxChange(category)"
           class="h-4 w-4 border-gray-300 rounded focus:ring-teal-500 cursor-pointer"
-        />
+          />
         <label :for="category" class="ml-3 text-gray-700 capitalize cursor-pointer">{{ category }}</label>
       </div>
     </div>
@@ -71,10 +71,10 @@ const priceRange = computed({
       <h3 class="text-lg font-medium mb-2">Rango de Precios</h3>
       <RangeSlider
         v-model="priceRange"
-        @update:modelValue="(value) => $emit('priceRangeChanged', value)"
         :min="availableMin"
         :max="availableMax"
-      />
+        @change="(value) => $emit('priceRangeChanged', value)"
+        />
       <div class="flex justify-between text-sm text-gray-600 mt-2">
         <span>${{ priceRange.min.toFixed(2) }}</span>
         <span>${{ priceRange.max.toFixed(2) }}</span>

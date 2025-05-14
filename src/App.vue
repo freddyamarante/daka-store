@@ -5,10 +5,18 @@ import ProductList from './components/ProductList.vue'
 import SettingsPanel from './components/SettingsPanel.vue'
 import FiltersPanel from './components/FiltersPanel.vue'
 import PaginationControls from './components/PaginationControls.vue'
+import { useUrlSearchParams } from '@vueuse/core'
 
 const appStore = useAppStore()
+const currentPage = ref(null)
+const params = useUrlSearchParams('history')
 
-const currentPage = ref(1)
+if (params.page) {
+  currentPage.value = parseInt(params.page)
+} else {
+  currentPage.value = 1
+}
+
 const loading = ref(true)
 const error = ref('')
 

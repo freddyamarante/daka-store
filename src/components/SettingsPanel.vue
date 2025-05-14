@@ -11,7 +11,7 @@ const appStore = useAppStore();
     <form class="space-y-3">
       <h2 class="text-xl font-medium text-slate-800">Visualización de Precios</h2>
       
-      <div class="p-4 bg-white rounded-lg shadow border border-slate-200 space-y-4">
+      <div class="p-4 rounded-lg border border-slate-200 space-y-4">
         <div class="flex items-center">
           <input 
             type="checkbox" 
@@ -54,7 +54,7 @@ const appStore = useAppStore();
 
     <div class="space-y-3">
       <h2 class="text-xl font-medium text-slate-800">Información de Tasa de Cambio</h2>
-      <div class="p-4 bg-white rounded-lg shadow-sm border border-slate-200">
+      <div class="p-4 rounded-lg border border-slate-200">
         <div v-if="appStore.exchangeRate > 0">
           <p class="text-slate-700 text-sm">
             Tasa BCV actual: 

@@ -45,11 +45,9 @@ const priceRange = computed({
 </script>
 
 <template>
-  <div class="flex flex-col p-4">
-    <h2 class="text-xl font-semibold mb-4">Filter Options</h2>
-
+  <div class="flex flex-col">
     <div>
-      <h3 class="text-lg font-medium mb-2">Categories</h3>
+      <h3 class="text-lg font-medium mb-2">Categorías</h3>
       <div v-for="category in appStore.categories" :key="category" class="flex items-center mb-2">
         <input
           type="checkbox"
@@ -66,7 +64,7 @@ const priceRange = computed({
     <hr class="h-px w-full border-teal-800/40 my-4" />
 
     <div>
-      <h3 class="text-lg font-medium mb-2">Price Range</h3>
+      <h3 class="text-lg font-medium mb-2">Rango de Precios</h3>
       <RangeSlider
         v-model="priceRange"
         :min="availableMin"

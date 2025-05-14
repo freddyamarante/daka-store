@@ -39,7 +39,7 @@
 
 <template>
   <main>
-    <div class="mx-auto max-w-3xl sm:max-w-5xl lg:max-w-[1440px] px-6 sm:px-8 lg:px-3 space-y-8 my-10">
+    <div class="mx-auto max-w-3xl sm:max-w-7xl lg:max-w-[1440px] px-6 sm:px-8 lg:px-3 space-y-8 my-10">
       <SettingsPanel />
       <div class="flex flex-col space-y-4">
         <h1 class="text-3xl font-semibold text-teal-700 border-b pb-3 border-teal-800/40">Panel de Productos</h1>
@@ -47,11 +47,11 @@
           Total de productos: {{ stats.totalProducts }} | Categorías únicas: {{ stats.uniqueCategories }} | Precio promedio: {{ stats.averagePrice.toFixed(2) }}
         </p>
       </div>
-      <div class="flex flex-row">
-        <aside class="basis-1/4">
+      <div class="flex flex-col lg:flex-row gap-4 lg:gap-12">
+        <aside class="basis-full lg:basis-[28%]">
           <FiltersPanel />
         </aside>
-        <div class="basis-3/4">
+        <div class="basis-full lg:basis-[72%]">
           <ProductList :products="paginatedProducts" />
         </div>
       </div>

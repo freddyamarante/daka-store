@@ -66,9 +66,9 @@ const isMaxDragging = ref(false);
 const startX = ref(0);
 const currentX = ref(0);
 
-const handleMouseDown = (event: MouseEvent, isMin: boolean) => {
+const handleStart = (event: MouseEvent | TouchEvent, isMin: boolean) => {
   isMin ? (isMinDragging.value = true) : (isMaxDragging.value = true);
-  startX.value = event.clientX;
+  startX.value = event instanceof MouseEvent ? event.clientX : event.touches[0].clientX;
   if (sliderTrack.value) {
     currentX.value =
       (isMin
@@ -76,14 +76,18 @@ const handleMouseDown = (event: MouseEvent, isMin: boolean) => {
         : (internalMaxValue.value - props.min) / (props.max - props.min)) *
       sliderTrack.value.offsetWidth;
   }
-  document.addEventListener('mousemove', handleMouseMove);
-  document.addEventListener('mouseup', handleMouseUp);
+  document.addEventListener('mousemove', handleMove);
+  document.addEventListener('mouseup', handleEnd);
+  document.addEventListener('touchmove', handleMove, { passive: false });
+  document.addEventListener('touchend', handleEnd);
+  document.addEventListener('touchcancel', handleEnd);
 };
 
-const handleMouseMove = (event: MouseEvent) => {
+const handleMove = (event: MouseEvent | TouchEvent) => {
   if (!isMinDragging.value && !isMaxDragging.value) return;
 
-  const diffX = event.clientX - startX.value;
+  const clientX = event instanceof MouseEvent ? event.clientX : event.touches[0].clientX;
+  const diffX = clientX - startX.value;
   if (sliderTrack.value) {
     const trackWidth = sliderTrack.value.offsetWidth;
     let newRatio = (currentX.value + diffX) / trackWidth;
@@ -98,33 +102,45 @@ const handleMouseMove = (event: MouseEvent) => {
   }
 };
 
-const handleMouseUp = () => {
+const handleEnd = () => {
   isMinDragging.value = false;
   isMaxDragging.value = false;
-  document.removeEventListener('mousemove', handleMouseMove);
-  document.removeEventListener('mouseup', handleMouseUp);
+  document.removeEventListener('mousemove', handleMove);
+  document.removeEventListener('mouseup', handleEnd);
+  document.removeEventListener('touchmove', handleMove);
+  document.removeEventListener('touchend', handleEnd);
+  document.removeEventListener('touchcancel', handleEnd);
 };
 
-const handleMinMouseDown = (event: MouseEvent) => handleMouseDown(event, true);
-const handleMaxMouseDown = (event: MouseEvent) => handleMouseDown(event, false);
+const handleMinMouseDown = (event: MouseEvent) => handleStart(event, true);
+const handleMaxMouseDown = (event: MouseEvent) => handleStart(event, false);
+const handleMinTouchStart = (event: TouchEvent) => handleStart(event, true);
+const handleMaxTouchStart = (event: TouchEvent) => handleStart(event, false);
 
 onMounted(() => {
   if (minThumb.value) {
     minThumb.value.addEventListener('mousedown', handleMinMouseDown);
+    minThumb.value.addEventListener('touchstart', handleMinTouchStart, { passive: false });
   }
   if (maxThumb.value) {
     maxThumb.value.addEventListener('mousedown', handleMaxMouseDown);
+    maxThumb.value.addEventListener('touchstart', handleMaxTouchStart, { passive: false });
   }
 });
 
 onUnmounted(() => {
-  document.removeEventListener('mousemove', handleMouseMove);
-  document.removeEventListener('mouseup', handleMouseUp);
+  document.removeEventListener('mousemove', handleMove);
+  document.removeEventListener('mouseup', handleEnd);
+  document.removeEventListener('touchmove', handleMove);
+  document.removeEventListener('touchend', handleEnd);
+  document.removeEventListener('touchcancel', handleEnd);
   if (minThumb.value) {
     minThumb.value.removeEventListener('mousedown', handleMinMouseDown);
+    minThumb.value.removeEventListener('touchstart', handleMinTouchStart);
   }
   if (maxThumb.value) {
     maxThumb.value.removeEventListener('mousedown', handleMaxMouseDown);
+    maxThumb.value.removeEventListener('touchstart', handleMaxTouchStart);
   }
 });
 </script>
@@ -139,14 +155,14 @@ onUnmounted(() => {
       class="pointer-events-none appearance-none absolute top-0 w-full h-full bg-transparent focus:outline-none"
       :min="min" :max="max" :step="1" :value="internalMinValue" style="padding: 0;" />
     <div ref="minThumb"
-      class="absolute top-1/2 w-5 h-5 bg-white border-2 border-teal-700 rounded-full shadow transform -translate-y-1/2 -translate-x-1 cursor-grab"
+      class="absolute top-1/2 w-5 h-5 bg-white border-2 border-teal-700 rounded-full shadow transform -translate-y-1/2 -translate-x-1 cursor-grab touch-none"
       :style="{ left: `${((internalMinValue - min) / (max - min)) * 100}%` }"></div>
 
     <input type="range"
       class="pointer-events-none appearance-none absolute top-0 w-full h-full bg-transparent focus:outline-none"
       :min="min" :max="max" :step="1" :value="internalMaxValue" style="padding: 0;" />
     <div ref="maxThumb"
-      class="absolute top-1/2 w-5 h-5 bg-white border-2 border-teal-700 rounded-full shadow transform -translate-y-1/2 -translate-x-1/2 cursor-grab"
+      class="absolute top-1/2 w-5 h-5 bg-white border-2 border-teal-700 rounded-full shadow transform -translate-y-1/2 -translate-x-1/2 cursor-grab touch-none"
       :style="{ left: `${((internalMaxValue - min) / (max - min)) * 100}%` }"></div>
   </div>
 </template>

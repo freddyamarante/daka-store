@@ -10,7 +10,7 @@ defineProps<{
 <template>
   <div class="w-full h-full">
     <div v-if="products.length > 0">
-      <TransitionGroup name="list" tag="div" class="flex flex-wrap gap-4">
+      <TransitionGroup name="list" tag="div" class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-x-12 sm:gap-y-10">
         <ProductCard v-for="product in products" :key="product.id" :product="product" />
       </TransitionGroup>
     </div>

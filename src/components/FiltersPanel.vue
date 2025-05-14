@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useAppStore } from '../stores/app';
+import RangeSlider from './RangeSlider.vue';
 
 const appStore = useAppStore();
 
@@ -10,8 +11,8 @@ const selectedCategories = computed({
   },
   set(value) {
     appStore.filterOptions.selectedCategories = value;
-  }
-})
+  },
+});
 
 const handleCheckboxChange = (category: string) => {
   if (selectedCategories.value.includes(category)) {
@@ -20,20 +21,63 @@ const handleCheckboxChange = (category: string) => {
     selectedCategories.value.push(category);
   }
 };
+
+const availableMin = computed(() =>
+  appStore.products.length ? Math.min(...appStore.products.map(p => p.price)) : 0
+);
+
+const availableMax = computed(() =>
+  appStore.products.length ? Math.max(...appStore.products.map(p => p.price)) : 1000
+);
+
+const priceRange = computed({
+  get() {
+    return {
+      min: appStore.filterOptions.minPrice,
+      max: appStore.filterOptions.maxPrice,
+    };
+  },
+  set(value) {
+    appStore.filterOptions.minPrice = value.min;
+    appStore.filterOptions.maxPrice = value.max;
+  },
+});
 </script>
 
 <template>
-  <div class="flex flex-col space-y-4">
-    <h2 class="text-lg font-medium">
-      Categorías
-    </h2>
-    <div v-for="category in appStore.categories" class="flex items-center" :key="category">
-      <input type="checkbox" :id="category" :value="category" :checked="selectedCategories.includes(category)"
-        @change="handleCheckboxChange(category)"
-        class="h-3 w-3 border-slate-200 rounded focus:ring-teal-500 focus:ring-offset-0 cursor-pointer" />
-      <label :for="category"
-        class="ml-3 block text-sm font-medium text-slate-700 cursor-pointer capitalize leading-none">{{ category
-        }}</label>
+  <div class="flex flex-col p-4">
+    <h2 class="text-xl font-semibold mb-4">Filter Options</h2>
+
+    <div>
+      <h3 class="text-lg font-medium mb-2">Categories</h3>
+      <div v-for="category in appStore.categories" :key="category" class="flex items-center mb-2">
+        <input
+          type="checkbox"
+          :id="category"
+          :value="category"
+          :checked="selectedCategories.includes(category)"
+          @change="handleCheckboxChange(category)"
+          class="h-4 w-4 border-gray-300 rounded focus:ring-teal-500 cursor-pointer"
+        />
+        <label :for="category" class="ml-3 text-gray-700 capitalize cursor-pointer">{{ category }}</label>
+      </div>
+    </div>
+
+    <hr class="h-px w-full border-teal-800/40 my-4" />
+
+    <div>
+      <h3 class="text-lg font-medium mb-2">Price Range</h3>
+      <RangeSlider
+        v-model="priceRange"
+        :min="availableMin"
+        :max="availableMax"
+      />
+      <div class="flex justify-between text-sm text-gray-600 mt-2">
+        <span>${{ priceRange.min.toFixed(2) }}</span>
+        <span>${{ priceRange.max.toFixed(2) }}</span>
+      </div>
     </div>
   </div>
 </template>
+
+<style scoped></style>

@@ -24,8 +24,8 @@
   const filteredProducts = computed(() => {
     return appStore.filteredProducts({
       categories: appStore.filterOptions.selectedCategories,
-      min: appStore.minPrice,
-      max: appStore.maxPrice
+      min: appStore.filterOptions.minPrice,
+      max: appStore.filterOptions.maxPrice
     })
   })
 

@@ -29,7 +29,7 @@ const formattedUsdPrice = computed(() => {
   return product.value?.price.toLocaleString('en-US', {
     style: 'currency',
     currency: 'USD',
-    minimumFractionDigits: 1, 
+    minimumFractionDigits: 1,
     maximumFractionDigits: 2
   }) || ''
 })
@@ -38,23 +38,26 @@ const formattedVesPrice = computed(() => {
   if (product.value && appStore.exchangeRate > 0) {
     const priceInVes = product.value.price * appStore.exchangeRate
     return `Bs. ${priceInVes.toLocaleString('es-VE', {
-      style: 'decimal', 
-      minimumFractionDigits: 1, 
+      style: 'decimal',
+      minimumFractionDigits: 1,
       maximumFractionDigits: 2
     })}`
   }
-  return 'Bs. --' 
+  return 'Bs. --'
+})
+
+const ratingStars = computed(() => {
+  return Math.round(product.value?.rating.rate)
 })
 </script>
 
 <template>
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-    <RouterLink 
-      to="/" 
-      class="inline-flex items-center text-teal-600 hover:text-teal-800 transition-colors mb-6"
-    >
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12 pt-32">
+    <RouterLink to="/" class="inline-flex items-center text-teal-600 hover:text-teal-800 transition-colors mb-6">
       <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-        <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+        <path fill-rule="evenodd"
+          d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z"
+          clip-rule="evenodd" />
       </svg>
       Back to products
     </RouterLink>
@@ -75,11 +78,7 @@ const formattedVesPrice = computed(() => {
       <div v-else-if="product" key="product" class="grid grid-cols-1 md:grid-cols-2 gap-12">
         <Transition name="slide" appear>
           <div class="bg-white rounded-xl shadow-md overflow-hidden">
-            <img 
-              :src="product.image" 
-              :alt="product.title"
-              class="w-full h-auto max-h-[500px] object-contain p-8"
-            >
+            <img :src="product.image" :alt="product.title" class="w-full h-auto max-h-[500px] object-contain p-8">
           </div>
         </Transition>
 
@@ -93,8 +92,22 @@ const formattedVesPrice = computed(() => {
               <span class="text-3xl font-bold text-teal-600">
                 {{ formattedUsdPrice }}
               </span>
-              <div v-if="appStore.displayOptions.showBothPrices" class="border border-slate-300 bg-slate-50 py-1 px-1.5 rounded-sm">
+              <div v-if="appStore.displayOptions.showBothPrices"
+                class="border border-slate-300 bg-slate-50 py-1 px-1.5 rounded-sm">
                 <span class="text-lg text-slate-500/90 font-medium">{{ formattedVesPrice }}</span>
+              </div>
+            </div>
+          </Transition>
+
+          <Transition name="slide" appear>
+            <div class="flex items-center gap-1.5">
+              <div v-for="star in ratingStars" class="h-4 w-4 text-teal-500" :key="star">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                  stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                  class="lucide lucide-star-icon lucide-star">
+                  <path
+                    d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z" />
+                </svg>
               </div>
             </div>
           </Transition>
@@ -145,8 +158,19 @@ const formattedVesPrice = computed(() => {
   transform: translateX(-20px);
 }
 
-.slide:nth-child(1) { transition-delay: 0.1s }
-.slide:nth-child(2) { transition-delay: 0.2s }
-.slide:nth-child(3) { transition-delay: 0.3s }
-.slide:nth-child(4) { transition-delay: 0.4s }
+.slide:nth-child(1) {
+  transition-delay: 0.1s
+}
+
+.slide:nth-child(2) {
+  transition-delay: 0.2s
+}
+
+.slide:nth-child(3) {
+  transition-delay: 0.3s
+}
+
+.slide:nth-child(4) {
+  transition-delay: 0.4s
+}
 </style>

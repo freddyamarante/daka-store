@@ -62,7 +62,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <main class="pb-8">
+  <main class="pt-16 pb-8">
     <div class="mx-auto max-w-3xl sm:max-w-7xl lg:max-w-[1440px] px-6 sm:px-8 lg:px-3 space-y-8 my-10">
       <SettingsPanel />
       <div class="flex flex-col space-y-4">

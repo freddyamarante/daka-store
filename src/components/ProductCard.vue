@@ -24,8 +24,8 @@ useIntersectionObserver(
     }
   },
   {
-    rootMargin: '10px',
-    threshold: 0.1
+    rootMargin: '0px',
+    threshold: 0
   }
 )
 
@@ -65,9 +65,7 @@ const otherFormattedPrice = computed(() => {
 
 <template>
   <div class="group relative flex flex-col overflow-hidden rounded-xl border border-teal-800/40 bg-white shadow-sm h-full transition-colors duration-200 ease-in-out">
-    <!-- Image Container -->
     <div class="relative border-b border-teal-800/40 h-[420px] sm:h-[460px] overflow-hidden">
-      <!-- Real Image (only when loaded and product exists) -->
       <template v-if="loaded && product">
         <img 
           ref="imgRef"

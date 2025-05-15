@@ -80,7 +80,7 @@ onMounted(async () => {
           />
         </aside>
         <div class="basis-full lg:basis-[72%]">
-          <ProductList :products="paginatedProducts" />
+          <ProductList :loading="loading" :products="paginatedProducts" />
           
           <PaginationControls
             :current-page="currentPage"

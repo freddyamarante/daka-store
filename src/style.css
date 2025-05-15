@@ -1,1 +1,6 @@
 @import "tailwindcss";
+
+
+:root {
+  @apply bg-teal-50/50;
+}

@@ -59,7 +59,7 @@ const prevPage = () => {
 </script>
 
 <template>
-  <div v-if="totalPages > 1" class="flex justify-center items-center space-x-2">
+  <div v-if="totalPages > 1" class="flex justify-center items-center space-x-2 my-8 lg:my-0">
     <button 
       @click="prevPage" 
       :disabled="currentPage === 1"

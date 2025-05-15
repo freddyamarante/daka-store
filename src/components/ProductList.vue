@@ -4,23 +4,30 @@ import ProductCard from './ProductCard.vue'
 
 defineProps<{
   products: Product[],
+  loading: boolean,
 }>()
 </script>
 
 <template>
   <div class="w-full h-full">
-    <div v-if="products.length > 0">
-      <TransitionGroup name="list" tag="div" class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-x-12 sm:gap-y-10">
-        <ProductCard v-for="product in products" :key="product.id" :product="product" />
-      </TransitionGroup>
-    </div>
-
-    <div v-else>
-      <div class="flex flex-col items-center justify-center h-full py-24">
-        <h2 class="text-xl font-semibold text-slate-700">No hay productos disponibles</h2>
-        <p class="text-sm text-slate-500">Intenta ajustar los filtros o recargar la página.</p>
-      </div>
-    </div>
+    <TransitionGroup name="list" tag="div" class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-x-12 sm:gap-y-10">
+      <template v-if="!loading">
+        <ProductCard 
+          v-for="product in products" 
+          :key="product.id" 
+          :product="product" 
+          :loaded="true" 
+        />
+      </template>
+      
+      <template v-else>
+        <ProductCard 
+          v-for="n in 4" 
+          :key="`skeleton-${n}`" 
+          :loaded="false" 
+        />
+      </template>
+    </TransitionGroup>
   </div>
 </template>
 
@@ -39,5 +46,9 @@ defineProps<{
 
 .list-leave-active {
   position: relative;
+}
+
+.list-enter-active {
+  opacity: 0;
 }
 </style>

@@ -64,7 +64,7 @@ onMounted(async () => {
 <template>
   <main class="pt-16 pb-8">
     <div class="mx-auto max-w-3xl sm:max-w-7xl lg:max-w-[1440px] px-6 sm:px-8 lg:px-3 space-y-8 my-10">
-      <SettingsPanel />
+      <SettingsPanel @items-per-page-changed="resetToFirstPage" />
       <div class="flex flex-col space-y-4">
         <h1 class="text-3xl font-semibold text-teal-700 border-b pb-3 border-teal-800/40">Panel de Productos</h1>
         <p class="text-slate-700 text-sm">

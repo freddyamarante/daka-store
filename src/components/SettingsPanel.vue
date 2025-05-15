@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {watch} from 'vue';
+import { watch } from 'vue';
 import { useAppStore } from '../stores/app';
 
 const appStore = useAppStore();
@@ -16,6 +16,7 @@ watch(
   () => appStore.pagination.itemsPerPage,
   (newValue) => {
     appStore.saveToLocalStorage()
+    
   }
 )
 </script>
@@ -78,6 +79,7 @@ watch(
             min="0"
             max="20"
             v-model.number="appStore.pagination.itemsPerPage"
+            @change="$emit('itemsPerPageChanged')"
             @input="appStore.pagination.itemsPerPage = Math.min(Math.max(appStore.pagination.itemsPerPage, 0), 20)"
             class="text-teal-600 border border-slate-800 bg-white rounded focus:ring-teal-500 focus:ring-offset-0 cursor-pointer px-4 py-1"
             />
